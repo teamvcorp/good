@@ -149,7 +149,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Program Details banner */
+      {/* Program Details banner */}
       <section className="px-6 py-14 text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4">
