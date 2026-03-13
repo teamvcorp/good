@@ -27,6 +27,8 @@ export default function Home() {
           The Good Deeds is an after-school and weekend initiative that introduces
           kids to computer coding, networking, and community service. Students build
           real-world hard and soft skills — and grow into confident leaders along the way.
+          Everything they create lives inside a <span className="font-semibold text-emerald-600 dark:text-emerald-400">personal interactive resume</span> that
+          grows with them from day one through adulthood.
         </p>
 
         {/* CTA */}
@@ -102,7 +104,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Program Details banner */}
+      {/* Interactive Resume Feature */}
+      <section className="px-6 py-16">
+        <div className="max-w-5xl mx-auto">
+          <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-500 dark:from-emerald-700 dark:to-teal-600 p-1 shadow-xl shadow-emerald-300/30 dark:shadow-emerald-900/50">
+            <div className="rounded-[calc(1.5rem-4px)] bg-white dark:bg-gray-950 px-8 py-12 sm:px-14 flex flex-col lg:flex-row items-center gap-10">
+              {/* Left: text */}
+              <div className="flex-1 text-center lg:text-left">
+                <span className="inline-block rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-bold tracking-widest uppercase px-4 py-1.5 mb-5">
+                  Signature Feature
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-emerald-800 dark:text-emerald-200 leading-tight mb-4">
+                  Their Own Interactive Resume — Built by Them, for Life.
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg leading-relaxed mb-6">
+                  Every student builds a living, interactive online resume from the very start of the program.
+                  As they learn to code, complete projects, and serve their community, their resume grows
+                  automatically — documenting skills, achievements, and contributions in real time.
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 text-base leading-relaxed">
+                  This isn&apos;t a one-time assignment. It&apos;s a lifelong professional asset —
+                  ready for college applications, internships, jobs, and beyond.
+                </p>
+              </div>
+              {/* Right: highlights */}
+              <div className="flex-shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 w-full lg:w-64">
+                {[
+                  { icon: "📄", text: "Built online from day one" },
+                  { icon: "📈", text: "Grows with every skill earned" },
+                  { icon: "🎓", text: "Ready for college & careers" },
+                  { icon: "♾️", text: "A lifelong professional asset" },
+                ].map(({ icon, text }) => (
+                  <div
+                    key={text}
+                    className="flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800 px-4 py-3"
+                  >
+                    <span className="text-2xl select-none">{icon}</span>
+                    <span className="text-sm font-medium text-emerald-800 dark:text-emerald-200">{text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Program Details banner */
       <section className="px-6 py-14 text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4">
