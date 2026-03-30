@@ -408,6 +408,30 @@ export default function DashboardPage() {
                   />
                   <span className="text-gray-700 dark:text-gray-300 font-medium text-xs">Hide contact info (privacy)</span>
                 </label>
+                {/* Resume accent color picker */}
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1.5 font-medium">Resume accent color</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {([
+                      { key: 'emerald', bg: 'bg-emerald-500' },
+                      { key: 'violet',  bg: 'bg-violet-500'  },
+                      { key: 'sky',     bg: 'bg-sky-500'     },
+                      { key: 'rose',    bg: 'bg-rose-500'    },
+                      { key: 'amber',   bg: 'bg-amber-500'   },
+                    ] as const).map(({ key, bg }) => (
+                      <button
+                        key={key}
+                        title={key}
+                        onClick={() => updateKidField('accentColor', key)}
+                        className={`w-6 h-6 rounded-full ${bg} transition-all ${
+                          (kid.accentColor ?? 'emerald') === key
+                            ? 'ring-2 ring-offset-2 ring-slate-500 dark:ring-slate-300 scale-110'
+                            : 'opacity-70 hover:opacity-100'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
                 <select
                   className="text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1.5 text-slate-700 dark:text-slate-300"
                   value={kid.selectedCategory}

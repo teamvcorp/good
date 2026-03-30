@@ -107,6 +107,9 @@ export interface Kid {
   communityFunds: CommunityFunds;
   selectedCategory: CommunityCategory;  // where tips default to
 
+  // public resume appearance
+  accentColor?: string;  // 'emerald' | 'violet' | 'sky' | 'rose' | 'amber'
+
   // privacy
   hideContactInfo: boolean;
 

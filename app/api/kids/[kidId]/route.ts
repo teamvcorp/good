@@ -32,6 +32,7 @@ export async function GET(
     education: kid.education ?? [],
     communityFunds: kid.communityFunds,
     selectedCategory: kid.selectedCategory,
+    accentColor: kid.accentColor ?? 'emerald',
     hideContactInfo: kid.hideContactInfo,
     // Only include contact if not hidden
     ...(kid.hideContactInfo
