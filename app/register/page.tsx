@@ -37,6 +37,7 @@ function RegistrationForm() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   // Step 1 — credentials
   const [username, setUsername] = useState('');
@@ -134,7 +135,8 @@ function RegistrationForm() {
       return;
     }
 
-    router.push('/dashboard');
+    setOrderSuccess(true);
+    setLoading(false);
   };
 
   const CARD_STYLE = {
@@ -177,14 +179,38 @@ function RegistrationForm() {
           ))}
         </div>
 
-        {error && (
+        {/* Success screen */}
+        {orderSuccess && (
+          <div className="text-center py-6 space-y-4">
+            <div className="text-6xl select-none">🎉</div>
+            <h2 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">You&apos;re in!</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mx-auto">
+              Registration complete. Your payment was processed successfully
+              {wantBusinessCards ? ' and your business card order has been submitted.' : '.'}
+            </p>
+            {wantBusinessCards && (
+              <div className="rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-200 text-left">
+                <span className="font-semibold">📬 Business cards ordered!</span> We&apos;ll mail them to the address you provided. Questions? Email{' '}
+                <a href="mailto:teamvcorp@thevacorp.com" className="underline">teamvcorp@thevacorp.com</a>.
+              </div>
+            )}
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 text-sm transition-colors shadow"
+            >
+              Go to Dashboard →
+            </button>
+          </div>
+        )}
+
+        {error && !orderSuccess && (
           <div className="mb-4 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm px-4 py-3">
             {error}
           </div>
         )}
 
         {/* Step 1 — Account */}
-        {step === 1 && (
+        {!orderSuccess && step === 1 && (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Create Your Account</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">You&apos;ll use this to manage your child&apos;s profile.</p>
@@ -195,7 +221,7 @@ function RegistrationForm() {
         )}
 
         {/* Step 2 — Parent Info */}
-        {step === 2 && (
+        {!orderSuccess && step === 2 && (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Parent / Guardian Info</h2>
             <input className={input} placeholder="Your full name" value={parentName} onChange={(e) => setParentName(e.target.value)} />
@@ -224,7 +250,7 @@ function RegistrationForm() {
         )}
 
         {/* Step 3 — Kids */}
-        {step === 3 && (
+        {!orderSuccess && step === 3 && (
           <div className="space-y-5">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Add Students</h2>
             {kids.map((kid, i) => (
@@ -287,7 +313,7 @@ function RegistrationForm() {
         )}
 
         {/* Step 4 — Payment */}
-        {step === 4 && (
+        {!orderSuccess && step === 4 && (
           <div className="space-y-5">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Payment</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -303,6 +329,7 @@ function RegistrationForm() {
         )}
 
         {/* Navigation */}
+        {!orderSuccess && (
         <div className="flex gap-3 mt-8">
           {step > 1 && (
             <button onClick={() => setStep((s) => s - 1)} className={btnSecondary}>
@@ -319,6 +346,7 @@ function RegistrationForm() {
             </button>
           )}
         </div>
+        )}
 
         <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account?{' '}

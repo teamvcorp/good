@@ -2,7 +2,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import type { Kid, Skill, Grade, Accomplishment, CommunityComment, EmploymentEntry, EducationEntry } from '@/lib/types';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 type CategoryOption = 'education' | 'health' | 'housing';
 
@@ -21,7 +25,7 @@ export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const [profile, setProfile] = useState<{ kids: Kid[] } | null>(null);
+  const [profile, setProfile] = useState<{ kids: Kid[]; address?: { street?: string; city?: string; state?: string; zip?: string } } | null>(null);
   const [selectedKid, setSelectedKid] = useState(0);
   const [activeTab, setActiveTab] = useState<'resume' | 'comments'>('resume');
   const [comments, setComments] = useState<CommunityComment[]>([]);
@@ -41,6 +45,8 @@ export default function DashboardPage() {
   const [newKidForm, setNewKidForm] = useState({ name: '', age: '', rank: '', program: '' });
   const [addKidError, setAddKidError] = useState('');
   const [confirmRemoveKid, setConfirmRemoveKid] = useState<number | null>(null);
+  const [showReorder, setShowReorder] = useState(false);
+  const [reorderKidId, setReorderKidId] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login');
@@ -454,6 +460,12 @@ export default function DashboardPage() {
                     Remove student…
                   </button>
                 )}
+                <button
+                  onClick={() => { setReorderKidId(kid.kidId); setShowReorder(true); }}
+                  className="text-xs rounded-lg border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 px-3 py-1.5 font-semibold transition-colors mt-1"
+                >
+                  🪪 Reorder Business Cards
+                </button>
               </div>
             </div>
 
@@ -729,6 +741,32 @@ export default function DashboardPage() {
         )}
       </main>
 
+      {/* Reorder Business Cards Modal */}
+      {showReorder && reorderKidId && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-7 relative">
+            <button
+              onClick={() => setShowReorder(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl leading-none"
+            >
+              ×
+            </button>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">Reorder Business Cards</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-5">
+              $10 per set — we&apos;ll mail a fresh pack of professional cards for this student.
+            </p>
+            <Elements stripe={stripePromise}>
+              <ReorderForm
+                kidId={reorderKidId}
+                address={profile?.address}
+                onSuccess={() => setShowReorder(false)}
+                onCancel={() => setShowReorder(false)}
+              />
+            </Elements>
+          </div>
+        </div>
+      )}
+
       {/* Add Kid Modal */}
       {showAddKid && (
           <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
@@ -773,6 +811,168 @@ export default function DashboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// ── US States ─────────────────────────────────────────────────────────────
+const US_STATES = [
+  { abbr: 'AL', name: 'Alabama' }, { abbr: 'AK', name: 'Alaska' }, { abbr: 'AZ', name: 'Arizona' },
+  { abbr: 'AR', name: 'Arkansas' }, { abbr: 'CA', name: 'California' }, { abbr: 'CO', name: 'Colorado' },
+  { abbr: 'CT', name: 'Connecticut' }, { abbr: 'DE', name: 'Delaware' }, { abbr: 'FL', name: 'Florida' },
+  { abbr: 'GA', name: 'Georgia' }, { abbr: 'HI', name: 'Hawaii' }, { abbr: 'ID', name: 'Idaho' },
+  { abbr: 'IL', name: 'Illinois' }, { abbr: 'IN', name: 'Indiana' }, { abbr: 'IA', name: 'Iowa' },
+  { abbr: 'KS', name: 'Kansas' }, { abbr: 'KY', name: 'Kentucky' }, { abbr: 'LA', name: 'Louisiana' },
+  { abbr: 'ME', name: 'Maine' }, { abbr: 'MD', name: 'Maryland' }, { abbr: 'MA', name: 'Massachusetts' },
+  { abbr: 'MI', name: 'Michigan' }, { abbr: 'MN', name: 'Minnesota' }, { abbr: 'MS', name: 'Mississippi' },
+  { abbr: 'MO', name: 'Missouri' }, { abbr: 'MT', name: 'Montana' }, { abbr: 'NE', name: 'Nebraska' },
+  { abbr: 'NV', name: 'Nevada' }, { abbr: 'NH', name: 'New Hampshire' }, { abbr: 'NJ', name: 'New Jersey' },
+  { abbr: 'NM', name: 'New Mexico' }, { abbr: 'NY', name: 'New York' }, { abbr: 'NC', name: 'North Carolina' },
+  { abbr: 'ND', name: 'North Dakota' }, { abbr: 'OH', name: 'Ohio' }, { abbr: 'OK', name: 'Oklahoma' },
+  { abbr: 'OR', name: 'Oregon' }, { abbr: 'PA', name: 'Pennsylvania' }, { abbr: 'RI', name: 'Rhode Island' },
+  { abbr: 'SC', name: 'South Carolina' }, { abbr: 'SD', name: 'South Dakota' }, { abbr: 'TN', name: 'Tennessee' },
+  { abbr: 'TX', name: 'Texas' }, { abbr: 'UT', name: 'Utah' }, { abbr: 'VT', name: 'Vermont' },
+  { abbr: 'VA', name: 'Virginia' }, { abbr: 'WA', name: 'Washington' }, { abbr: 'WV', name: 'West Virginia' },
+  { abbr: 'WI', name: 'Wisconsin' }, { abbr: 'WY', name: 'Wyoming' }, { abbr: 'DC', name: 'Washington D.C.' },
+];
+
+// ── Reorder Business Cards Form ───────────────────────────────────────────
+function ReorderForm({ kidId, address: initialAddress, onSuccess, onCancel }: {
+  kidId: string;
+  address?: { street?: string; city?: string; state?: string; zip?: string };
+  onSuccess: () => void;
+  onCancel: () => void;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Shipping address (pre-populated from profile)
+  const [street, setStreet] = useState(initialAddress?.street ?? '');
+  const [city, setCity] = useState(initialAddress?.city ?? '');
+  const [stateAbbr, setStateAbbr] = useState(initialAddress?.state ?? '');
+  const [zip, setZip] = useState(initialAddress?.zip ?? '');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    setErrMsg('');
+
+    if (!street.trim() || !city.trim() || !stateAbbr || !zip.trim()) {
+      setErrMsg('Please fill in your complete shipping address before ordering.');
+      setStatus('error');
+      return;
+    }
+    if (!/^\d{5}(-\d{4})?$/.test(zip.trim())) {
+      setErrMsg('Enter a valid 5-digit ZIP code.');
+      setStatus('error');
+      return;
+    }
+
+    setLoading(true);
+    const cardEl = elements.getElement(CardElement);
+    if (!cardEl) { setLoading(false); return; }
+
+    const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardEl,
+    });
+
+    if (pmError || !paymentMethod) {
+      setErrMsg(pmError?.message ?? 'Could not read card.');
+      setStatus('error');
+      setLoading(false);
+      return;
+    }
+
+    const res = await fetch(`/api/kids/${kidId}/reorder-cards`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paymentMethodId: paymentMethod.id,
+        address: { street: street.trim(), city: city.trim(), state: stateAbbr, zip: zip.trim() },
+      }),
+    });
+    const data = await res.json();
+    setLoading(false);
+    if (!res.ok) {
+      setErrMsg(data.error ?? 'Reorder failed. Please try again or contact support.');
+      setStatus('error');
+    } else {
+      setStatus('success');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="text-center py-4 space-y-3">
+        <div className="text-5xl select-none">✅</div>
+        <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300">Order placed!</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Your cards will be mailed to {street}, {city}, {stateAbbr} {zip}. Questions?{' '}
+          <a href="mailto:teamvcorp@thevacorp.com" className="underline text-emerald-600 dark:text-emerald-400">
+            teamvcorp@thevacorp.com
+          </a>
+        </p>
+        <button
+          onClick={onSuccess}
+          className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 text-sm transition-colors"
+        >
+          Done
+        </button>
+      </div>
+    );
+  }
+
+  const inp = 'w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition';
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {status === 'error' && errMsg && (
+        <div className="rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm px-4 py-3">
+          <span className="font-semibold">Error:</span> {errMsg}
+        </div>
+      )}
+
+      {/* Shipping address */}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Ship to</p>
+        <input className={inp} placeholder="Street address" value={street} onChange={(e) => setStreet(e.target.value)} />
+        <div className="grid grid-cols-2 gap-2">
+          <input className={inp} placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
+          <input className={inp} placeholder="ZIP" value={zip} onChange={(e) => setZip(e.target.value)} maxLength={10} />
+        </div>
+        <select className={inp} value={stateAbbr} onChange={(e) => setStateAbbr(e.target.value)}>
+          <option value="">State…</option>
+          {US_STATES.map((s) => <option key={s.abbr} value={s.abbr}>{s.name}</option>)}
+        </select>
+      </div>
+
+      {/* Card */}
+      <div className="border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 bg-slate-50 dark:bg-slate-800">
+        <CardElement options={{ hidePostalCode: false, style: { base: { fontSize: '15px', color: '#1f2937', '::placeholder': { color: '#9ca3af' } } } }} />
+      </div>
+      <p className="text-xs text-slate-400 dark:text-slate-500 text-center">
+        Payments are processed securely by Stripe. We never store your card details.
+      </p>
+      <div className="flex gap-3">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="flex-1 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-semibold py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="flex-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-semibold py-2.5 text-sm transition-colors"
+        >
+          {loading ? 'Processing…' : 'Pay $10 & Reorder'}
+        </button>
+      </div>
+    </form>
   );
 }
 
