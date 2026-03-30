@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { Resend } from 'resend';
 import { getUserByUsername, createUser, generateKidId } from '@/lib/userStore';
 import getStripe from '@/lib/stripe';
 import type { User, Kid } from '@/lib/types';
@@ -132,6 +133,43 @@ export async function POST(request: NextRequest) {
     };
 
     await createUser(user);
+
+    // ── Email notification for business card orders ───────────────────────
+    if (wantBusinessCards) {
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const kidLines = builtKids
+          .map((k, i) => `  ${i + 1}. ${k.name} (Age ${k.age}) — ID: ${k.kidId}`)
+          .join('\n');
+
+        await resend.emails.send({
+          from: 'gooddeed@fyht4.com',
+          to: 'teamvcorp@thevacorp.com',
+          subject: '#GoodOrder',
+          text: [
+            'New Business Card Order — Good Deeds',
+            '',
+            `Parent:   ${parentName}`,
+            `Username: ${normalizedUsername}`,
+            `Email:    ${email || '(not provided)'}`,
+            `Phone:    ${phone || '(not provided)'}`,
+            '',
+            'Ship to:',
+            `  ${address.street}`,
+            `  ${address.city}, ${address.state} ${address.zip}`,
+            '',
+            `Students (${builtKids.length}):`,
+            kidLines,
+            '',
+            `Total charged: $${(totalCents / 100).toFixed(2)}`,
+            `Stripe Payment Intent: ${paymentIntent.id}`,
+          ].join('\n'),
+        });
+      } catch (emailErr) {
+        // Non-fatal — log but don't fail the registration
+        console.error('[register] business card order email failed:', emailErr);
+      }
+    }
 
     return NextResponse.json({
       success: true,
