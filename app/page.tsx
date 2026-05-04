@@ -248,57 +248,105 @@ export default function Home() {
 
       {tab === 'home' && (<>
 
-      {/* Hero — dark */}
-      <section className="bg-slate-900 dark:bg-slate-950 text-white px-6 pt-24 pb-28 flex flex-col items-center text-center">
-        <p className="section-label text-emerald-400 mb-4">After-School &amp; Weekends</p>
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight max-w-4xl">
-          The Next Generation<br />
-          <span className="text-emerald-400">Living Resume</span>
-        </h1>
-        <p className="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
-          Connecting kids, building community, and driving positive change — one documented milestone at a time.
-        </p>
-        <p className="mt-3 text-xs text-slate-400 tracking-wide">
-          A{' '}<span className="text-slate-300 font-medium">Von Der Becke Academy Corp</span>{' '}Initiative &mdash;{' '}
-          <span className="text-emerald-500">501(c)(3) Educational Nonprofit</span>
-        </p>
-        <div className="mt-10 flex flex-col sm:flex-row gap-4">
-          <a href="/register" className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-8 py-4 text-base transition-colors shadow-lg shadow-emerald-900/40">
-            Enroll Your Child →
-          </a>
-          <a href="/login" className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-600 text-slate-300 hover:border-slate-400 hover:text-white font-semibold px-8 py-4 text-base transition-colors">
-            Sign In
-          </a>
-          <a href="#about" className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 text-slate-400 hover:text-slate-200 font-semibold px-8 py-4 text-base transition-colors">
-            Learn More ↓
-          </a>
+      {/* Hero — gradient with diagonal accent (style from example) */}
+      <section className="relative isolate overflow-hidden bg-linear-to-b from-emerald-50/20 dark:from-emerald-950/10 pt-14">
+        <div
+          aria-hidden="true"
+          className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white dark:bg-slate-900 shadow-xl shadow-emerald-600/10 ring-1 ring-emerald-50 dark:ring-white/5 sm:-mr-80 lg:-mr-96"
+        />
+        <div className="mx-auto max-w-5xl px-6 py-32 sm:py-40 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:grid lg:max-w-none lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8">
+            <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-700/60 rounded-full px-4 py-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 tracking-widest uppercase mb-6 lg:col-span-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Now Enrolling · After-School &amp; Weekends
+            </div>
+            <h1 className="max-w-2xl text-balance text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-7xl lg:col-span-2 xl:col-auto leading-[1.1]">
+              Build Character.<br />
+              Build Community.<br />
+              <span className="text-emerald-600 dark:text-emerald-400">Build a Future.</span>
+            </h1>
+            <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1">
+              <p className="text-pretty text-lg font-medium text-slate-500 dark:text-slate-400 sm:text-xl/8 leading-relaxed">
+                Good Deeds gives young people a <strong className="text-slate-700 dark:text-slate-200">living resume</strong> that grows with every good action — documenting skills, community impact, and character in real time. Not just for today. For life.
+              </p>
+              <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
+                A <span className="font-semibold text-slate-600 dark:text-slate-300">Von Der Becke Academy Corp</span> Initiative ·{' '}
+                <span className="text-emerald-600 dark:text-emerald-400 font-medium">501(c)(3) Educational Nonprofit · EIN 46-1005883</span>
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <a href="/register" className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 text-base transition-colors shadow-lg shadow-emerald-600/30">
+                  Enroll Your Child →
+                </a>
+                <a href="/login" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-emerald-500 dark:hover:border-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-400 font-semibold px-8 py-4 text-base transition-colors">
+                  Sign In
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="mt-8 inline-flex items-center gap-2 bg-emerald-900/40 border border-emerald-700/60 rounded-full px-4 py-1.5 text-xs font-semibold text-emerald-400 tracking-widest uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Now enrolling
-        </div>
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-linear-to-t from-white dark:from-slate-900 sm:h-32" />
       </section>
 
-      {/* What Kids Learn */}
-      <section id="about" className="bg-white dark:bg-slate-900 px-6 py-20">
+      {/* Program Journey — timeline layout */}
+      <section id="about" className="bg-white dark:bg-slate-900 px-6 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-2xl text-center mb-16">
+            <p className="section-label mb-3">The Journey</p>
+            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              How Character Grows Over Time
+            </h2>
+            <p className="mt-4 text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-base leading-relaxed">
+              From day one, students start building a record of who they are — and who they&apos;re becoming.
+            </p>
+          </div>
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 overflow-hidden lg:mx-0 lg:max-w-none lg:grid-cols-4">
+            {[
+              { date: 'Week 1', dateTime: 'week-1', name: 'Enroll & Begin', desc: 'Create your living resume. Introduce yourself to the community. Your story starts here.' },
+              { date: 'Months 1–3', dateTime: 'months-1-3', name: 'Earn Your Skills', desc: 'Document real accomplishments, earn skill badges, and start contributing to community projects.' },
+              { date: 'Months 4–6', dateTime: 'months-4-6', name: 'Lead & Impact', desc: 'Take ownership of initiatives, mentor peers, and build a visible record of positive impact.' },
+              { date: 'Ongoing', dateTime: 'ongoing', name: 'Career & College Ready', desc: 'Your living resume grows into a lifelong asset — ready for applications, internships, and employers.' },
+            ].map((item) => (
+              <div key={item.name}>
+                <time
+                  dateTime={item.dateTime}
+                  className="flex items-center text-sm/6 font-semibold text-emerald-600 dark:text-emerald-400"
+                >
+                  <svg viewBox="0 0 4 4" aria-hidden="true" className="mr-4 size-1 flex-none">
+                    <circle r={2} cx={2} cy={2} fill="currentColor" />
+                  </svg>
+                  {item.date}
+                  <div
+                    aria-hidden="true"
+                    className="absolute -ml-2 h-px w-screen -translate-x-full bg-slate-900/10 dark:bg-white/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
+                  />
+                </time>
+                <p className="mt-6 text-lg/8 font-bold tracking-tight text-slate-900 dark:text-white">{item.name}</p>
+                <p className="mt-1 text-base/7 text-slate-600 dark:text-slate-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* What Kids Build — character-focused cards */}
+      <section className="bg-white dark:bg-slate-900 px-6 py-20">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="section-label mb-3">Program</p>
-            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100">What Kids Learn &amp; Gain</h2>
-            <p className="mt-4 text-slate-500 dark:text-slate-400 max-w-xl mx-auto">Every session builds real-world skills that open doors in school, community, and careers.</p>
+            <p className="section-label mb-3">The Program</p>
+            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">What Kids Build &amp; Gain</h2>
+            <p className="mt-4 text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">Every session builds real character, real skills, and a permanent record that opens doors — in school, community, and careers.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: "🌐", title: "Networking", desc: "Building genuine relationships with peers, mentors, and community leaders that open doors and create lasting bonds." },
-              { icon: "🤝", title: "Meaningful Contribution", desc: "Real action through service projects and hands-on initiatives that make a measurable community difference." },
-              { icon: "💚", title: "Positive Social Impact", desc: "Understanding how individual actions shape society and developing an ethic of care, equity, and responsibility." },
-              { icon: "🗣️", title: "Communication", desc: "Public speaking, active listening, and storytelling skills that help students advocate for themselves and others." },
-              { icon: "🌟", title: "Soft Skills", desc: "Teamwork, empathy, creative thinking, and conflict resolution — the human skills that define great leaders." },
-              { icon: "🏆", title: "Leadership", desc: "Students take ownership of service projects and mentor peers, building real-world leadership experience from day one." },
+              { icon: "🌱", title: "Character First", desc: "Every action builds integrity. Students learn that who you are matters more than what you have — and that reputation is built one choice at a time." },
+              { icon: "🤝", title: "Meaningful Contribution", desc: "Real action through service projects and hands-on initiatives that make a measurable, lasting difference in the community." },
+              { icon: "💚", title: "Positive Social Impact", desc: "Understanding how individual actions shape society and developing a deep ethic of care, equity, and responsibility toward others." },
+              { icon: "🗣️", title: "Communication", desc: "Public speaking, active listening, and storytelling skills that help students advocate for themselves and lift up the people around them." },
+              { icon: "🌐", title: "Community Networks", desc: "Building genuine relationships with peers, mentors, and community leaders that open doors and create lifelong bonds." },
+              { icon: "🏆", title: "Earned Leadership", desc: "Students take real ownership of projects and mentor peers — developing leadership through accountability, not just title." },
             ].map(({ icon, title, desc }) => (
-              <div key={title} className="rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-600 transition-all">
+              <div key={title} className="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-600 transition-all group">
                 <div className="text-3xl mb-4 select-none">{icon}</div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">{title}</h3>
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">{title}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</p>
               </div>
             ))}
@@ -306,8 +354,46 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Interactive Resume Feature — dark card */}
-      <section className="bg-slate-50 dark:bg-slate-800/30 px-6 py-20">
+      {/* Stats — big numbers */}
+      <section className="bg-slate-50 dark:bg-slate-800/40 px-6 py-20">
+        <div className="max-w-5xl mx-auto">
+          <div className="mx-auto max-w-2xl text-center mb-16">
+            <p className="section-label mb-3">Impact</p>
+            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              We approach every session as a chance to make the world better
+            </h2>
+            <p className="mt-4 text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+              Character is built gradually — through consistent positive actions, real accountability, and a community that cares.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 flex max-w-2xl flex-col gap-6 lg:mx-0 lg:mt-20 lg:max-w-none lg:flex-row lg:items-end">
+            <div className="flex flex-col-reverse justify-between gap-x-16 gap-y-8 rounded-2xl bg-slate-50 dark:bg-white/5 dark:ring-1 dark:ring-inset dark:ring-white/10 p-8 sm:w-3/4 sm:max-w-md sm:flex-row-reverse sm:items-end lg:w-72 lg:max-w-none lg:flex-none lg:flex-col lg:items-start border border-slate-200 dark:border-slate-700">
+              <p className="flex-none text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">3 Pillars</p>
+              <div className="sm:w-80 sm:shrink lg:w-auto lg:flex-none">
+                <p className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">Education · Health · Housing</p>
+                <p className="mt-2 text-base/7 text-slate-600 dark:text-slate-300">Every tip goes directly into one of three community impact funds — fully transparent.</p>
+              </div>
+            </div>
+            <div className="flex flex-col-reverse justify-between gap-x-16 gap-y-8 rounded-2xl bg-slate-900 dark:bg-slate-800 p-8 sm:flex-row-reverse sm:items-end lg:w-full lg:max-w-sm lg:flex-auto lg:flex-col lg:items-start lg:gap-y-36 dark:ring-1 dark:ring-inset dark:ring-white/10">
+              <p className="flex-none text-3xl font-extrabold tracking-tight text-white">Living Resumes</p>
+              <div className="sm:w-80 sm:shrink lg:w-auto lg:flex-none">
+                <p className="text-lg font-semibold tracking-tight text-white">Every student&apos;s journey — documented from day one.</p>
+                <p className="mt-2 text-base/7 text-slate-400">Skills, accomplishments, community endorsements and academic records all in one beautiful profile.</p>
+              </div>
+            </div>
+            <div className="flex flex-col-reverse justify-between gap-x-16 gap-y-8 rounded-2xl bg-emerald-600 p-8 sm:w-11/12 sm:max-w-xl sm:flex-row-reverse sm:items-end lg:w-full lg:max-w-none lg:flex-auto lg:flex-col lg:items-start lg:gap-y-28 dark:ring-1 dark:ring-inset dark:ring-white/10">
+              <p className="flex-none text-3xl font-extrabold tracking-tight text-white">Lifelong Asset</p>
+              <div className="sm:w-80 sm:shrink lg:w-auto lg:flex-none">
+                <p className="text-lg font-semibold tracking-tight text-white">The resume that grows with them — forever.</p>
+                <p className="mt-2 text-base/7 text-emerald-100">College applications. Internships. First jobs. Every milestone captured and ready to share.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Living Resume Feature — dark showcase card */}
+      <section className="bg-white dark:bg-slate-900 px-6 py-20">
         <div className="max-w-5xl mx-auto">
           <div className="rounded-2xl bg-slate-900 overflow-hidden shadow-2xl flex flex-col lg:flex-row">
             <div className="flex-1 px-10 py-14 lg:py-16">
@@ -322,7 +408,7 @@ export default function Home() {
               <p className="text-slate-400 text-sm leading-relaxed">
                 This isn&apos;t a one-time assignment. It&apos;s a lifelong professional asset — ready for college applications, internships, and careers.
               </p>
-              <a href="/register" className="inline-flex mt-8 items-center gap-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-6 py-3 text-sm transition-colors">
+              <a href="/register" className="inline-flex mt-8 items-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-6 py-3 text-sm transition-colors shadow-lg shadow-emerald-900/30">
                 Start Building Theirs →
               </a>
             </div>
@@ -330,6 +416,7 @@ export default function Home() {
               {[
                 { icon: "📄", text: "Built online from day one" },
                 { icon: "📈", text: "Grows with every skill earned" },
+                { icon: "💬", text: "Community endorsements build trust" },
                 { icon: "🎓", text: "Ready for college & careers" },
                 { icon: "♾️", text: "A lifelong professional asset" },
               ].map(({ icon, text }) => (
@@ -344,20 +431,20 @@ export default function Home() {
       </section>
 
       {/* Where Funds Go */}
-      <section className="bg-white dark:bg-slate-900 px-6 py-20">
+      <section className="bg-slate-50 dark:bg-slate-800/40 px-6 py-20">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <p className="section-label mb-3">Impact</p>
-            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100">Where Every Dollar Goes</h2>
-            <p className="mt-4 text-slate-500 dark:text-slate-400 max-w-xl mx-auto">All funds flow directly into three pillars of lasting community change — fully transparent.</p>
+            <p className="section-label mb-3">Transparency</p>
+            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Where Every Dollar Goes</h2>
+            <p className="mt-4 text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">All community tips flow directly into three pillars of lasting change — fully transparent, zero overhead confusion.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { icon: "📚", title: "Education", topColor: "border-t-emerald-500", desc: "Scholarships, school supplies, tutoring programs, and educational resources for underserved youth." },
-              { icon: "🏠", title: "Housing", topColor: "border-t-teal-500", desc: "Safe, stable housing through shelters, affordable housing initiatives, and transitional support programs." },
-              { icon: "❤️", title: "Health & Sustainability", topColor: "border-t-cyan-500", desc: "Equitable healthcare access, mental wellness resources, and sustainable practices that protect people and planet." },
+              { icon: "📚", title: "Education", topColor: "border-t-emerald-500", desc: "Scholarships, school supplies, tutoring programs, and educational resources for underserved youth who deserve every opportunity." },
+              { icon: "🏠", title: "Housing", topColor: "border-t-teal-500", desc: "Safe, stable housing through shelters, affordable housing initiatives, and transitional support for families in need." },
+              { icon: "❤️", title: "Health & Wellness", topColor: "border-t-cyan-500", desc: "Equitable healthcare access, mental wellness resources, and sustainable practices that protect people and communities." },
             ].map(({ icon, title, topColor, desc }) => (
-              <div key={title} className={`rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 border-t-4 ${topColor} p-8 shadow-sm hover:shadow-md transition-shadow`}>
+              <div key={title} className={`rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 border-t-4 ${topColor} p-8 shadow-sm hover:shadow-md transition-shadow`}>
                 <div className="text-4xl mb-4 select-none">{icon}</div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">{title}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{desc}</p>
@@ -368,44 +455,113 @@ export default function Home() {
       </section>
 
       {/* CTA — dark */}
-      <section className="bg-slate-900 dark:bg-slate-950 px-6 py-20 text-center">
-        <div className="max-w-3xl mx-auto">
-          <p className="section-label text-emerald-400 mb-4">Get Started</p>
-          <h2 className="text-4xl font-extrabold text-white mb-4">Ready to Join?</h2>
-          <p className="text-slate-300 mb-10 text-lg max-w-xl mx-auto">
-            Our after-school and weekend sessions are open now. Spots are limited — reach out today to secure your child&apos;s place.
+      <section className="bg-slate-900 dark:bg-slate-950 px-6 py-24 text-center">
+        <div className="relative isolate overflow-hidden mx-auto max-w-3xl">
+          <p className="section-label text-emerald-400 mb-4">Get Started Today</p>
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 tracking-tight">
+            Invest in Who They&apos;re Becoming
+          </h2>
+          <p className="text-slate-300 mb-10 text-xl max-w-2xl mx-auto leading-relaxed">
+            Character built through community engagement, documented through a living resume, and carried for a lifetime.
+            Spots are limited — enroll your child today.
           </p>
-          <a href="/register" className="inline-flex items-center justify-center rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white font-semibold px-10 py-4 text-base transition-colors shadow-lg shadow-emerald-900/40">
-            Enroll Your Child Now →
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/register" className="inline-flex items-center justify-center rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-10 py-4 text-base transition-colors shadow-lg shadow-emerald-900/40">
+              Enroll Your Child Now →
+            </a>
+            <a href="#about" className="inline-flex items-center justify-center rounded-xl border border-slate-600 text-slate-300 hover:border-slate-400 hover:text-white font-semibold px-10 py-4 text-base transition-colors">
+              Learn More ↓
+            </a>
+          </div>
         </div>
       </section>
 
       </>)}
 
       {/* Footer */}
-      <footer className="bg-slate-900 dark:bg-slate-950 py-10 px-6 border-t border-slate-800">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5 text-white font-bold">
-            <span className="w-7 h-7 rounded-md bg-emerald-500 flex items-center justify-center text-sm select-none">💡</span>
-            Good Deeds
+      <footer className="bg-slate-900 dark:bg-slate-950 border-t border-slate-800">
+        <div className="mx-auto max-w-5xl px-6 pb-8 pt-16 sm:pt-20">
+          <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+            <div className="xl:col-span-1">
+              <div className="flex items-center gap-2.5 font-extrabold text-white text-base mb-4">
+                <span className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-sm select-none">💡</span>
+                Good Deeds
+              </div>
+              <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
+                Building character, community, and futures — one documented good deed at a time.
+              </p>
+              <p className="mt-4 text-xs text-slate-500 leading-relaxed">
+                <span className="text-slate-300 font-semibold">Von Der Becke Academy Corp</span><br />
+                <span className="text-emerald-500">501(c)(3) Educational Facility</span> · EIN 46-1005883
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
+              <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div>
+                  <h3 className="text-sm/6 font-semibold text-white">Program</h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {[
+                      { name: 'How It Works', href: '#about' },
+                      { name: 'Enroll Your Child', href: '/register' },
+                      { name: 'For Employers', href: '#' },
+                    ].map((item) => (
+                      <li key={item.name}>
+                        <a href={item.href} className="text-sm/6 text-slate-400 hover:text-emerald-400 transition-colors">{item.name}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="mt-10 md:mt-0">
+                  <h3 className="text-sm/6 font-semibold text-white">Impact</h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {[
+                      { name: 'Education Fund', href: '#' },
+                      { name: 'Housing Fund', href: '#' },
+                      { name: 'Health Fund', href: '#' },
+                    ].map((item) => (
+                      <li key={item.name}>
+                        <a href={item.href} className="text-sm/6 text-slate-400 hover:text-emerald-400 transition-colors">{item.name}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="md:grid md:grid-cols-2 md:gap-8">
+                <div>
+                  <h3 className="text-sm/6 font-semibold text-white">Account</h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {[
+                      { name: 'Sign In', href: '/login' },
+                      { name: 'Register', href: '/register' },
+                      { name: 'Dashboard', href: '/dashboard' },
+                    ].map((item) => (
+                      <li key={item.name}>
+                        <a href={item.href} className="text-sm/6 text-slate-400 hover:text-emerald-400 transition-colors">{item.name}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="mt-10 md:mt-0">
+                  <h3 className="text-sm/6 font-semibold text-white">Legal</h3>
+                  <ul role="list" className="mt-6 space-y-4">
+                    {[
+                      { name: 'Privacy Policy', href: '#' },
+                      { name: 'Terms of Service', href: '#' },
+                    ].map((item) => (
+                      <li key={item.name}>
+                        <a href={item.href} className="text-sm/6 text-slate-400 hover:text-emerald-400 transition-colors">{item.name}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-slate-500 text-center">
-            &copy; {new Date().getFullYear()} The Good Deeds. All rights reserved.
-          </p>
-          <div className="flex gap-4 text-xs text-slate-500">
-            <a href="/register" className="hover:text-emerald-400 transition-colors">Enroll</a>
-            <a href="/login" className="hover:text-emerald-400 transition-colors">Sign In</a>
+          <div className="mt-16 border-t border-slate-800 pt-8 sm:mt-20 flex flex-col sm:flex-row items-center justify-between gap-4 lg:mt-24">
+            <p className="text-xs/6 text-slate-500">
+              &copy; {new Date().getFullYear()} The Good Deeds · Von Der Becke Academy Corp. All rights reserved.
+            </p>
           </div>
-        </div>
-        <div className="max-w-5xl mx-auto mt-6 pt-6 border-t border-slate-800 text-center">
-          <p className="text-xs text-slate-500 leading-relaxed">
-            A project of{' '}
-            <span className="text-slate-300 font-semibold">Von Der Becke Academy Corp</span>
-            {' '}·{' '}
-            <span className="text-emerald-500 font-medium">501(c)(3) Educational Facility</span>
-            {' '}· EIN&nbsp;46-1005883
-          </p>
         </div>
       </footer>
     </main>

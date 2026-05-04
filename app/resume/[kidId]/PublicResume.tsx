@@ -320,204 +320,318 @@ export default function PublicResume({ kid, comments }: { kid: Kid; comments: Co
         </button>
       </header>
 
-      <main className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6">
-        {/* Hero Card */}
-        <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-lg p-8 flex flex-col sm:flex-row items-center gap-6`}>
-          <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${t.avatarGrad} flex items-center justify-center text-5xl select-none shadow-md shrink-0`}>
-            {kid.avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={kid.avatarUrl} alt={kid.name} className="w-24 h-24 rounded-2xl object-cover" />
-            ) : '🌟'}
-          </div>
-          <div className="text-center sm:text-left flex-1">
-            <h1 className={`text-3xl font-extrabold ${t.heading}`}>{kid.name}</h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">
-              {kid.rank}{kid.program ? ` · ${kid.program}` : ''} · Age {kid.age}
-            </p>
-            <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-              {kid.bio || <span className="italic text-gray-400">No bio added yet.</span>}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
-              <span className={`text-xs rounded-full ${t.badge} px-3 py-1 font-mono font-semibold`}>
-                ID: {kid.kidId}
-              </span>
-              {!kid.hideContactInfo && kid.email && (
-                <a href={`mailto:${kid.email}`} className="text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-3 py-1 hover:underline">{kid.email}</a>
-              )}
+      <main>
+        {/* ── Hero — full-width gradient with diagonal accent ── */}
+        <div className="relative isolate overflow-hidden">
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 right-1/2 -z-10 -mr-96 w-[200%] origin-top-right skew-x-[-30deg] bg-white/70 dark:bg-gray-900/60 shadow-xl ring-1 ring-black/5 sm:-mr-80 lg:-mr-96"
+          />
+          <div className="mx-auto max-w-4xl px-6 py-16 sm:py-24">
+            <div className="flex flex-col sm:flex-row items-center gap-10">
+              {/* Avatar */}
+              <div className="relative shrink-0">
+                <div className={`w-36 h-36 rounded-3xl bg-linear-to-br ${t.avatarGrad} flex items-center justify-center text-6xl select-none shadow-2xl ring-4 ring-white dark:ring-gray-800`}>
+                  {kid.avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={kid.avatarUrl} alt={kid.name} className="w-36 h-36 rounded-3xl object-cover" />
+                  ) : '🌟'}
+                </div>
+                <span className={`absolute -bottom-2 -right-2 text-xs font-bold ${t.badge} px-2.5 py-1 rounded-full ring-2 ring-white dark:ring-gray-900`}>
+                  {kid.rank}
+                </span>
+              </div>
+
+              {/* Info */}
+              <div className="flex-1 text-center sm:text-left">
+                <div className={`inline-flex items-center gap-1.5 text-xs font-semibold ${t.badge} px-3 py-1 rounded-full mb-4`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                  Living Resume · Growing in Real Time
+                </div>
+                <h1 className={`text-4xl sm:text-5xl font-extrabold ${t.heading} tracking-tight leading-tight`}>
+                  {kid.name}
+                </h1>
+                <p className={`mt-2 text-base ${t.accent} font-semibold`}>
+                  {kid.rank}{kid.program ? ` · ${kid.program}` : ''} · Age {kid.age}
+                </p>
+                {kid.bio ? (
+                  <p className="mt-3 text-gray-600 dark:text-gray-300 text-base leading-relaxed max-w-xl">
+                    {kid.bio}
+                  </p>
+                ) : (
+                  <p className="mt-3 text-gray-400 italic text-sm">No bio added yet.</p>
+                )}
+
+                {/* Key stats row */}
+                <div className="mt-6 flex flex-wrap gap-6 justify-center sm:justify-start">
+                  <div className="text-center sm:text-left">
+                    <p className={`text-3xl font-extrabold ${t.heading}`}>{kid.skills.length}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Skills Earned</p>
+                  </div>
+                  <div className="hidden sm:block w-px bg-gray-200 dark:bg-gray-700 self-stretch" />
+                  <div className="text-center sm:text-left">
+                    <p className={`text-3xl font-extrabold ${t.heading}`}>{kid.accomplishments.length}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Accomplishments</p>
+                  </div>
+                  <div className="hidden sm:block w-px bg-gray-200 dark:bg-gray-700 self-stretch" />
+                  <div className="text-center sm:text-left">
+                    <p className={`text-3xl font-extrabold ${t.heading}`}>${(totalFunds / 100).toFixed(0)}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Community Raised</p>
+                  </div>
+                  <div className="hidden sm:block w-px bg-gray-200 dark:bg-gray-700 self-stretch" />
+                  <div className="text-center sm:text-left">
+                    <p className={`text-3xl font-extrabold ${t.heading}`}>{comments.length}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Endorsements</p>
+                  </div>
+                </div>
+
+                {/* CTA buttons */}
+                <div className="mt-6 flex flex-wrap gap-2 justify-center sm:justify-start">
+                  <button
+                    onClick={() => setShowTip(true)}
+                    className={`rounded-full ${t.btnSolid} font-bold px-6 py-2.5 text-sm shadow-md transition-colors`}
+                  >
+                    💚 Support {kid.name}
+                  </button>
+                  {!kid.hideContactInfo && kid.email && (
+                    <a href={`mailto:${kid.email}`} className={`rounded-full ${t.supportBtn} font-semibold px-5 py-2.5 text-sm transition-colors`}>
+                      ✉ Get in Touch
+                    </a>
+                  )}
+                  <span className={`self-center text-xs rounded-full ${t.badge} px-3 py-1 font-mono font-semibold`}>
+                    ID: {kid.kidId}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
+          <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-linear-to-t from-white/60 dark:from-gray-950/60" />
         </div>
 
-        {/* Community Funds Progress Bars */}
-        <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6`}>
-          <h2 className={`text-lg font-bold ${t.heading} mb-1`}>Community Impact</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
-            Total raised: <span className={`font-bold ${t.accent}`}>${(totalFunds / 100).toFixed(2)}</span>
-          </p>
-          <div className="space-y-4">
-            {(['education', 'health', 'housing'] as CommunityCategory[]).map((cat) => {
-              const amount = kid.communityFunds[cat] ?? 0;
-              const pct = totalFunds > 0 ? Math.round((amount / totalFunds) * 100) : 0;
-              return (
-                <div key={cat}>
-                  <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="font-medium text-gray-700 dark:text-gray-300 capitalize flex items-center gap-1.5">
-                      {CATEGORY_ICON[cat]} {cat}
-                    </span>
-                    <span className={`font-bold ${t.accent}`}>${(amount / 100).toFixed(2)}</span>
-                  </div>
-                  <div className="h-4 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${CATEGORY_COLOR[cat]} transition-all duration-700`}
-                      style={{ width: `${Math.max(pct, amount > 0 ? 4 : 0)}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <button
-            onClick={() => setShowTip(true)}
-            className={`mt-5 w-full rounded-full ${t.supportBtn} font-semibold py-2.5 text-sm transition-colors`}
-          >
-            💚 Support {kid.name}
-          </button>
-        </div>
+        {/* ── Content sections ── */}
+        <div className="mx-auto max-w-4xl px-6 pb-20 space-y-8">
 
-        {/* Skills */}
-        <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6`}>
-          <h2 className={`text-lg font-bold ${t.heading} mb-4`}>Skills</h2>
-          {kid.skills.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {kid.skills.map((s) => (
-                <div key={s.id} className={`rounded-full px-3 py-1.5 text-xs font-semibold ${LEVEL_COLOR(t, s.level)}`}>
-                  {s.name}{s.category ? ` · ${s.category}` : ''}
-                  <span className="ml-1.5 opacity-60 capitalize">{s.level}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-400 dark:text-gray-500 italic">No skills added yet.</p>
-          )}
-        </div>
-
-        {/* Grades */}
-        <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6`}>
-          <h2 className={`text-lg font-bold ${t.heading} mb-4`}>Academic Record</h2>
-          {kid.grades.length > 0 ? (
-            <div className="divide-y divide-gray-100 dark:divide-gray-800">
-              {kid.grades.map((g) => (
-                <div key={g.id} className="flex items-center justify-between py-2.5">
-                  <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{g.subject}</span>
-                  <div className="flex items-center gap-3">
-                    <span className={`text-sm font-bold ${t.accent}`}>{g.grade}</span>
-                    <span className="text-xs text-gray-400">{g.period}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-400 dark:text-gray-500 italic">No grades added yet.</p>
-          )}
-        </div>
-
-        {/* Accomplishments */}
-        <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6`}>
-          <h2 className={`text-lg font-bold ${t.heading} mb-4`}>Accomplishments</h2>
-          {kid.accomplishments.length > 0 ? (
-            <div className="space-y-4">
-              {kid.accomplishments.map((a) => (
-                <div key={a.id} className="flex gap-4">
-                  <div className={`w-1 rounded-full bg-gradient-to-b ${t.accentStrip} shrink-0`} />
-                  <div>
-                    <div className="font-semibold text-gray-800 dark:text-gray-200 text-sm">{a.title}</div>
-                    {a.description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{a.description}</p>}
-                    <p className="text-xs text-gray-400 mt-0.5">{a.date}{a.category ? ` · ${a.category}` : ''}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-400 dark:text-gray-500 italic">No accomplishments added yet.</p>
-          )}
-        </div>
-
-        {/* Work Experience */}
-        {(kid.employment?.length ?? 0) > 0 && (
-          <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6`}>
-            <h2 className={`text-lg font-bold ${t.heading} mb-4`}>Work Experience</h2>
-            <div className="space-y-4">
-              {kid.employment!.map((e) => (
-                <div key={e.id} className="flex gap-4">
-                  <div className="w-1 rounded-full bg-gradient-to-b from-teal-400 to-cyan-400 shrink-0" />
-                  <div>
-                    <div className="font-semibold text-gray-800 dark:text-gray-200 text-sm">
-                      {e.title} <span className="font-normal text-gray-500 dark:text-gray-400">at {e.employer}</span>
+          {/* Community Impact — big stat boxes */}
+          <div>
+            <h2 className={`text-xs font-bold ${t.accent} uppercase tracking-widest mb-4`}>Community Impact</h2>
+            <div className="grid grid-cols-1 gap-6 overflow-hidden sm:grid-cols-3">
+              {(['education', 'health', 'housing'] as CommunityCategory[]).map((cat) => {
+                const amount = kid.communityFunds[cat] ?? 0;
+                const pct = totalFunds > 0 ? Math.round((amount / totalFunds) * 100) : 0;
+                return (
+                  <div key={cat} className="flex flex-col-reverse justify-between gap-y-4 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-8 shadow-sm">
+                    <div>
+                      <p className="text-lg font-semibold text-gray-900 dark:text-gray-100 capitalize flex items-center gap-2">
+                        {CATEGORY_ICON[cat]} {cat}
+                      </p>
+                      <div className="mt-2 h-1.5 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full bg-linear-to-r ${CATEGORY_COLOR[cat]}`}
+                          style={{ width: `${Math.max(pct, amount > 0 ? 6 : 0)}%` }}
+                        />
+                      </div>
+                      <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">{pct}% of total raised</p>
                     </div>
-                    <div className="text-xs text-gray-400 mt-0.5">{e.startDate}{e.endDate ? ` — ${e.endDate}` : ' — Present'}</div>
-                    {e.description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{e.description}</p>}
+                    <p className={`text-3xl font-extrabold ${t.accent}`}>${(amount / 100).toFixed(2)}</p>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+            </div>
+            <div className="mt-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold text-gray-900 dark:text-gray-100">
+                  Total raised: <span className={t.accent}>${(totalFunds / 100).toFixed(2)}</span>
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  Every dollar goes directly to education, health, or housing funds
+                </p>
+              </div>
+              <button
+                onClick={() => setShowTip(true)}
+                className={`shrink-0 rounded-full ${t.supportBtn} font-semibold px-6 py-2.5 text-sm transition-colors`}
+              >
+                💚 Contribute
+              </button>
             </div>
           </div>
-        )}
 
-        {/* Education History */}
-        {(kid.education?.length ?? 0) > 0 && (
-          <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6`}>
-            <h2 className={`text-lg font-bold ${t.heading} mb-4`}>Education</h2>
-            <div className="space-y-4">
-              {kid.education!.map((e) => (
-                <div key={e.id} className="flex gap-4">
-                  <div className="w-1 rounded-full bg-gradient-to-b from-cyan-400 to-emerald-400 shrink-0" />
-                  <div>
-                    <div className="font-semibold text-gray-800 dark:text-gray-200 text-sm">{e.institution}</div>
-                    {e.degree && <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{e.degree}{e.field ? `, ${e.field}` : ''}</div>}
-                    <div className="text-xs text-gray-400 mt-0.5">{e.startDate}{e.endDate ? ` — ${e.endDate}` : ' — In Progress'}</div>
-                    {e.description && <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{e.description}</p>}
+          {/* Skills & Expertise */}
+          <div className={`rounded-2xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-sm p-6 sm:p-8`}>
+            <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Skills &amp; Expertise</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              {kid.skills.length > 0
+                ? `${kid.skills.length} skill${kid.skills.length !== 1 ? 's' : ''} earned through real-world practice`
+                : 'Skills will appear here as they are earned'}
+            </p>
+            {kid.skills.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {kid.skills.map((s) => (
+                  <div key={s.id} className={`rounded-xl px-4 py-2 text-sm font-semibold ${LEVEL_COLOR(t, s.level)} flex items-center gap-2`}>
+                    <span>{s.name}</span>
+                    {s.category && <span className="text-xs opacity-60">{s.category}</span>}
+                    <span className="text-xs font-medium bg-white/40 rounded-full px-2 py-0.5 capitalize">{s.level}</span>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 dark:text-gray-500 italic">No skills added yet.</p>
+            )}
           </div>
-        )}
 
-        {/* Community Comments */}
-        <div className={`rounded-3xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow p-6 space-y-5`}>
-          <h2 className={`text-lg font-bold ${t.heading}`}>Community Words</h2>
-          {comments.length > 0 ? (
-            <div className="space-y-4">
-              {comments.map((c) => (
-                <div key={c.id} className={`rounded-2xl ${t.commentCard} px-5 py-4`}>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">&ldquo;{c.body}&rdquo;</p>
-                  <p className="text-xs text-gray-400 mt-2">— {c.authorName}</p>
-                </div>
-              ))}
+          {/* Growth Story — Timeline layout */}
+          <div className={`rounded-2xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-sm p-6 sm:p-8`}>
+            <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Growth Story</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+              Every milestone — documented, celebrated, remembered
+            </p>
+            {kid.accomplishments.length > 0 ? (
+              <div className="grid grid-cols-1 gap-8 overflow-hidden sm:grid-cols-2">
+                {kid.accomplishments.map((a) => (
+                  <div key={a.id}>
+                    <time className={`flex items-center text-sm/6 font-semibold ${t.accent}`}>
+                      <svg viewBox="0 0 4 4" aria-hidden="true" className="mr-4 size-1 flex-none">
+                        <circle r={2} cx={2} cy={2} fill="currentColor" />
+                      </svg>
+                      {a.date || 'Recent'}{a.category ? ` · ${a.category}` : ''}
+                      <div
+                        aria-hidden="true"
+                        className="absolute -ml-2 h-px w-screen -translate-x-full bg-gray-900/10 dark:bg-white/10 sm:-ml-4 lg:static lg:-mr-6 lg:ml-8 lg:w-auto lg:flex-auto lg:translate-x-0"
+                      />
+                    </time>
+                    <p className="mt-4 text-base/7 font-bold text-gray-900 dark:text-white">{a.title}</p>
+                    {a.description && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{a.description}</p>}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 dark:text-gray-500 italic">Accomplishments will appear here as they are earned.</p>
+            )}
+          </div>
+
+          {/* Academic Record */}
+          <div className={`rounded-2xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-sm p-6 sm:p-8`}>
+            <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Academic Record</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Verified grades &amp; coursework</p>
+            {kid.grades.length > 0 ? (
+              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                {kid.grades.map((g) => (
+                  <div key={g.id} className="flex items-center justify-between py-3.5">
+                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">{g.subject}</span>
+                    <div className="flex items-center gap-3">
+                      <span className={`text-base font-extrabold ${t.accent}`}>{g.grade}</span>
+                      <span className={`text-xs ${t.badge} px-2.5 py-1 rounded-full`}>{g.period}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 dark:text-gray-500 italic">No grades added yet.</p>
+            )}
+          </div>
+
+          {/* Work Experience */}
+          {(kid.employment?.length ?? 0) > 0 && (
+            <div className={`rounded-2xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-sm p-6 sm:p-8`}>
+              <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Work Experience</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Real-world professional experience</p>
+              <div className="space-y-6">
+                {kid.employment!.map((e) => (
+                  <div key={e.id} className="flex gap-5">
+                    <div className={`mt-1 w-1.5 rounded-full bg-linear-to-b ${t.accentStrip} shrink-0`} />
+                    <div>
+                      <p className="font-bold text-gray-900 dark:text-gray-100">{e.title}</p>
+                      <p className={`text-sm font-semibold ${t.accent} mt-0.5`}>{e.employer}</p>
+                      <p className="text-xs text-gray-400 mt-1">{e.startDate}{e.endDate ? ` — ${e.endDate}` : ' — Present'}</p>
+                      {e.description && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed">{e.description}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          ) : (
-            <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-2">No community comments yet.</p>
           )}
-          <div className={`border-t ${t.divider} pt-5`}>
-            <h3 className={`text-sm font-bold ${t.accent} mb-3`}>Leave a comment</h3>
-            <CommentForm kidId={kid.kidId} theme={t} />
+
+          {/* Education History */}
+          {(kid.education?.length ?? 0) > 0 && (
+            <div className={`rounded-2xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-sm p-6 sm:p-8`}>
+              <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Education</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Academic institutions &amp; credentials</p>
+              <div className="space-y-6">
+                {kid.education!.map((e) => (
+                  <div key={e.id} className="flex gap-5">
+                    <div className="mt-1 w-1.5 rounded-full bg-linear-to-b from-cyan-400 to-emerald-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-gray-900 dark:text-gray-100">{e.institution}</p>
+                      {e.degree && <p className={`text-sm font-semibold ${t.accent} mt-0.5`}>{e.degree}{e.field ? `, ${e.field}` : ''}</p>}
+                      <p className="text-xs text-gray-400 mt-1">{e.startDate}{e.endDate ? ` — ${e.endDate}` : ' — In Progress'}</p>
+                      {e.description && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed">{e.description}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Community Voices — testimonial grid */}
+          <div className={`rounded-2xl bg-white dark:bg-gray-900 border ${t.cardBorder} shadow-sm overflow-hidden`}>
+            <div className={`h-1.5 bg-linear-to-r ${t.accentStrip}`} />
+            <div className="p-6 sm:p-8">
+              <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Community Voices</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+                What the community says — real endorsements, real impact
+              </p>
+              {comments.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                  {comments.map((c) => (
+                    <div key={c.id} className={`rounded-2xl ${t.commentCard} px-5 py-5`}>
+                      <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300 italic">&ldquo;{c.body}&rdquo;</p>
+                      <div className="mt-4 flex items-center gap-2.5">
+                        <div className={`w-8 h-8 rounded-full bg-linear-to-br ${t.avatarGrad} flex items-center justify-center text-sm font-extrabold text-white select-none`}>
+                          {c.authorName.charAt(0).toUpperCase()}
+                        </div>
+                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-400">{c.authorName}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-10 mb-6">
+                  <div className="text-5xl mb-3 select-none">💬</div>
+                  <p className="font-semibold text-gray-700 dark:text-gray-300">Be the first voice</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm mx-auto">
+                    Your endorsement becomes a permanent part of {kid.name}&apos;s living record.
+                  </p>
+                </div>
+              )}
+              <div className={`border-t ${t.divider} pt-6`}>
+                <h3 className={`text-base font-extrabold ${t.heading} mb-1`}>Leave an Endorsement</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-5">
+                  Positive words become part of {kid.name}&apos;s permanent story. All comments are reviewed by the family.
+                </p>
+                <CommentForm kidId={kid.kidId} theme={t} />
+              </div>
+            </div>
           </div>
+
         </div>
       </main>
 
       {/* Tip Modal */}
       {showTip && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-7 relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowTip(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl leading-none"
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 text-xl transition-colors"
             >
               ×
             </button>
-            <h2 className={`text-xl font-bold ${t.heading} mb-5`}>
-              Send a Tip to {kid.name}
-            </h2>
+            <div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${t.avatarGrad} flex items-center justify-center text-2xl mb-5 select-none shadow-lg`}>
+              💚
+            </div>
+            <h2 className={`text-xl font-extrabold ${t.heading} mb-1`}>Support {kid.name}</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+              Your contribution goes directly to {kid.name}&apos;s education, health, or housing fund.
+            </p>
             <Elements stripe={stripePromise}>
               <TipForm kidId={kid.kidId} kidName={kid.name} defaultCategory={kid.selectedCategory} theme={t} />
             </Elements>
