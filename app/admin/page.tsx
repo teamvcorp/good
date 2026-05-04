@@ -88,6 +88,18 @@ export default function AdminPage() {
   const [resetMsg, setResetMsg] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
 
+  /* ── create-user state ── */
+  const [showCreate, setShowCreate] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createMsg, setCreateMsg] = useState('');
+  const [createForm, setCreateForm] = useState({
+    username: '', password: '', parentName: '', parentAge: '',
+    email: '', phone: '', kidName: '', kidAge: '', kidRank: '', kidProgram: '',
+  });
+
+  const setCreate = (field: string, value: string) =>
+    setCreateForm((prev) => ({ ...prev, [field]: value }));
+
   // ── Login ──
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,6 +172,46 @@ export default function AdminPage() {
     }
   };
 
+  // ── Create user (fee waived) ──
+  const doCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCreateLoading(true);
+    setCreateMsg('');
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: createForm.username,
+          password: createForm.password,
+          parentName: createForm.parentName,
+          parentAge: Number(createForm.parentAge),
+          email: createForm.email || undefined,
+          phone: createForm.phone || undefined,
+          kids: [{
+            name: createForm.kidName,
+            age: Number(createForm.kidAge),
+            rank: createForm.kidRank,
+            program: createForm.kidProgram,
+          }],
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setCreateMsg('Account created!');
+        setUsers((prev) => [...prev, data]);
+        setCreateForm({ username: '', password: '', parentName: '', parentAge: '', email: '', phone: '', kidName: '', kidAge: '', kidRank: '', kidProgram: '' });
+        setTimeout(() => { setShowCreate(false); setCreateMsg(''); }, 2000);
+      } else {
+        setCreateMsg(data.error ?? 'Failed to create account.');
+      }
+    } catch {
+      setCreateMsg('Network error.');
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
   // ══════════ LOGIN SCREEN ══════════
   if (!authed) {
     return (
@@ -228,6 +280,98 @@ export default function AdminPage() {
               <p className="text-xs text-slate-400 mt-1">{s.label}</p>
             </div>
           ))}
+        </div>
+
+        {/* Create Account (Fee Waived) */}
+        <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
+          <button
+            onClick={() => { setShowCreate((v) => !v); setCreateMsg(''); }}
+            className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-slate-800/50 transition-colors"
+          >
+            <span className="text-sm font-semibold text-slate-200">＋ Create Account <span className="text-slate-500 font-normal">(fee waived)</span></span>
+            <span className="text-slate-500 text-xs">{showCreate ? '▲' : '▼'}</span>
+          </button>
+          {showCreate && (
+            <form onSubmit={doCreateUser} className="border-t border-slate-700/60 px-5 py-5 space-y-4">
+              <p className="text-xs text-slate-500">Creates an active account with registration fee marked as paid. No payment required.</p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-400">Username *</label>
+                  <input required value={createForm.username} onChange={(e) => setCreate('username', e.target.value)}
+                    placeholder="username" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-400">Password * (min 8 chars)</label>
+                  <input required type="password" value={createForm.password} onChange={(e) => setCreate('password', e.target.value)}
+                    placeholder="••••••••" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-400">Parent Name *</label>
+                  <input required value={createForm.parentName} onChange={(e) => setCreate('parentName', e.target.value)}
+                    placeholder="Jane Smith" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-400">Parent Age *</label>
+                  <input required type="number" min={18} max={120} value={createForm.parentAge} onChange={(e) => setCreate('parentAge', e.target.value)}
+                    placeholder="35" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-400">Email</label>
+                  <input type="email" value={createForm.email} onChange={(e) => setCreate('email', e.target.value)}
+                    placeholder="jane@example.com" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-400">Phone</label>
+                  <input type="tel" value={createForm.phone} onChange={(e) => setCreate('phone', e.target.value)}
+                    placeholder="555-555-5555" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                </div>
+              </div>
+
+              <div className="border-t border-slate-700/50 pt-4">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-3">Student</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-xs text-slate-400">Student Name *</label>
+                    <input required value={createForm.kidName} onChange={(e) => setCreate('kidName', e.target.value)}
+                      placeholder="Alex Smith" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs text-slate-400">Student Age *</label>
+                    <input required type="number" min={1} max={25} value={createForm.kidAge} onChange={(e) => setCreate('kidAge', e.target.value)}
+                      placeholder="12" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs text-slate-400">Rank / Belt</label>
+                    <input value={createForm.kidRank} onChange={(e) => setCreate('kidRank', e.target.value)}
+                      placeholder="White Belt" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs text-slate-400">Program</label>
+                    <input value={createForm.kidProgram} onChange={(e) => setCreate('kidProgram', e.target.value)}
+                      placeholder="Martial Arts" className="w-full rounded-xl border border-slate-600 bg-slate-800 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-slate-500" />
+                  </div>
+                </div>
+              </div>
+
+              {createMsg && (
+                <p className={`text-xs px-1 ${createMsg.includes('created') ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {createMsg}
+                </p>
+              )}
+
+              <div className="flex gap-3 pt-1">
+                <button type="submit" disabled={createLoading}
+                  className="rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold px-5 py-2.5 text-sm transition-colors">
+                  {createLoading ? 'Creating…' : 'Create Account'}
+                </button>
+                <button type="button" onClick={() => { setShowCreate(false); setCreateMsg(''); }}
+                  className="text-sm text-slate-400 hover:text-white border border-slate-700 hover:border-slate-500 rounded-xl px-4 py-2.5 transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
         </div>
 
         {/* Search */}
